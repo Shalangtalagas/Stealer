@@ -1,5 +1,5 @@
 -- === EDIT THIS ===
-local SELECTED_SCRIPT = "DarkScripts"  -- Options: "DarkScripts", "XScripts", "NullScripts", "None"
+local SELECTED_SCRIPT = "XScripts"  -- Options: "DarkScripts", "XScripts", "NullScripts", "None"
 -- === END EDIT ===
 
 local SCRIPTS = {
